@@ -24,7 +24,7 @@
                 <h1 class="text-2xl md:text-3xl font-bold text-emerald-400 flex items-center gap-2">
                     📊 多平台交易損益紀錄與風控儀表板
                 </h1>
-                <p class="text-slate-400 text-sm mt-1">追蹤各平台交易績效、風報比、期望值與資金曲線（雲端即時同步）</p>
+                <p class="text-slate-400 text-sm mt-1">追蹤各平台交易績效、進出場價格、期望值與資金曲線（雲端即時同步）</p>
             </div>
             <div class="flex flex-wrap items-center gap-3">
                 <label class="text-sm text-slate-300">統計月份：</label>
@@ -39,7 +39,7 @@
             </div>
         </header>
 
-        <!-- 頂部數據統計卡片區塊 (含勝率、盈虧比、EV等風控指標) -->
+        <!-- 頂部數據統計卡片區塊 -->
         <section class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
             <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-md">
                 <span class="text-slate-400 text-xs block font-medium">總交易筆數</span>
@@ -86,11 +86,11 @@
                         </div>
                         <div>
                             <label class="block text-xs text-slate-400 mb-1">交易平台/券商</label>
-                            <input type="text" id="inputPlatform" placeholder="例如：富邦證券、幣安" list="platformOptions" required class="w-full bg-slate-700 text-white px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-emerald-500">
+                            <input type="text" id="inputPlatform" placeholder="例如：統一證券、幣安" list="platformOptions" required class="w-full bg-slate-700 text-white px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-emerald-500">
                             <datalist id="platformOptions">
+                                <option value="統一證券">
                                 <option value="富邦證券">
                                 <option value="凱基證券">
-                                <option value="統一證券">
                                 <option value="元大期貨">
                                 <option value="群益期貨">
                                 <option value="Binance">
@@ -98,22 +98,28 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="col-span-2">
                             <label class="block text-xs text-slate-400 mb-1">交易標的 / 代號</label>
                             <input type="text" id="inputAsset" placeholder="例如：2330 台積電" required class="w-full bg-slate-700 text-white px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-emerald-500">
                         </div>
                         <div>
-                            <label class="block text-xs text-slate-400 mb-1">交易策略分類</label>
-                            <select id="inputStrategy" class="w-full bg-slate-700 text-white px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-emerald-500">
-                                <option value="開盤突破">開盤突破</option>
-                                <option value="VWAP回測">VWAP回測</option>
-                                <option value="動能當沖">動能當沖</option>
-                                <option value="關鍵關卡彈">關鍵關卡彈</option>
-                                <option value="波段續抱">波段續抱</option>
-                                <option value="其他/隨意進場">其他/隨意進場</option>
-                            </select>
+                            <label class="block text-xs text-slate-400 mb-1">交易數量 (張/股)</label>
+                            <input type="number" id="inputQuantity" placeholder="例如 1 或 1000" min="0" step="any" class="w-full bg-slate-700 text-white px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-emerald-500">
                         </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">交易策略分類 (可選或自訂)</label>
+                        <input type="text" id="inputStrategy" placeholder="請選擇或自行輸入策略名稱" list="strategyOptions" class="w-full bg-slate-700 text-white px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-emerald-500">
+                        <datalist id="strategyOptions">
+                            <option value="開盤突破">
+                            <option value="VWAP回測">
+                            <option value="動能當沖">
+                            <option value="關鍵關卡彈">
+                            <option value="波段續抱">
+                            <option value="其他/隨意進場">
+                        </datalist>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
@@ -127,21 +133,21 @@
                         </div>
                     </div>
 
-                    <!-- 事前風控規劃區塊 -->
+                    <!-- 進出場價格區塊 -->
                     <div class="grid grid-cols-2 gap-3 p-3 bg-slate-700/40 rounded-lg border border-slate-700">
                         <div>
-                            <label class="block text-xs text-emerald-400 mb-1">預計獲利 (TP)</label>
-                            <input type="number" id="inputTargetProfit" placeholder="例如 6000" min="0" step="any" class="w-full bg-slate-700 text-white px-3 py-1.5 rounded-lg border border-slate-600 text-xs focus:outline-none focus:border-emerald-500">
+                            <label class="block text-xs text-emerald-400 mb-1">進場價格 (Cost)</label>
+                            <input type="number" id="inputEntryPrice" placeholder="例如 980" min="0" step="any" class="w-full bg-slate-700 text-white px-3 py-1.5 rounded-lg border border-slate-600 text-xs focus:outline-none focus:border-emerald-500">
                         </div>
                         <div>
-                            <label class="block text-xs text-rose-400 mb-1">預計停損 (SL)</label>
-                            <input type="number" id="inputMaxLoss" placeholder="例如 2000" min="0" step="any" class="w-full bg-slate-700 text-white px-3 py-1.5 rounded-lg border border-slate-600 text-xs focus:outline-none focus:border-rose-500">
+                            <label class="block text-xs text-rose-400 mb-1">出場價格 (Exit)</label>
+                            <input type="number" id="inputExitPrice" placeholder="例如 1020" min="0" step="any" class="w-full bg-slate-700 text-white px-3 py-1.5 rounded-lg border border-slate-600 text-xs focus:outline-none focus:border-rose-500">
                         </div>
                     </div>
 
                     <div>
                         <label class="block text-xs text-slate-400 mb-1">交易檢討 / 策略備註</label>
-                        <textarea id="inputNote" rows="2" placeholder="例如：突破追單、當沖停損，輸入較多文字可於列表點擊查看" class="w-full bg-slate-700 text-white px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-emerald-500 text-sm"></textarea>
+                        <textarea id="inputNote" rows="2" placeholder="是否有遵守紀律？進場理由是否成立？" class="w-full bg-slate-700 text-white px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-emerald-500 text-sm"></textarea>
                     </div>
 
                     <button type="submit" id="submitBtn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2.5 rounded-lg transition shadow-md">
@@ -176,8 +182,8 @@
                         <tr class="text-xs text-slate-400 border-b border-slate-700">
                             <th class="py-3 px-3">日期</th>
                             <th class="py-3 px-3">平台</th>
-                            <th class="py-3 px-3">標的/策略</th>
-                            <th class="py-3 px-3 text-center">預期/實際風報比</th>
+                            <th class="py-3 px-3">標的/數量/策略</th>
+                            <th class="py-3 px-3 text-center">進價 / 出價</th>
                             <th class="py-3 px-3 text-right">實現損益</th>
                             <th class="py-3 px-3 text-right">手續費/稅</th>
                             <th class="py-3 px-3 text-right">淨損益</th>
@@ -207,7 +213,7 @@
     </div>
 
     <script>
-        // 1. 保留原本 Firebase 配置金鑰
+        // 1. Firebase 配置金鑰
         const firebaseConfig = {
             apiKey: "AIzaSyCWx0lVV819nGYeEyCJ9ZSbJhAUqGCO5Ro",
             authDomain: "loan-867b2.firebaseapp.com",
@@ -269,11 +275,12 @@
                 date: document.getElementById('inputDate').value,
                 platform: document.getElementById('inputPlatform').value.trim(),
                 asset: document.getElementById('inputAsset').value.trim(),
-                strategy: document.getElementById('inputStrategy').value,
+                quantity: parseFloat(document.getElementById('inputQuantity').value) || 0,
+                strategy: document.getElementById('inputStrategy').value.trim() || '其他/隨意進場',
                 pnl: parseFloat(document.getElementById('inputPnL').value) || 0,
                 fee: parseFloat(document.getElementById('inputFee').value) || 0,
-                targetProfit: parseFloat(document.getElementById('inputTargetProfit').value) || 0,
-                maxLoss: parseFloat(document.getElementById('inputMaxLoss').value) || 0,
+                entryPrice: parseFloat(document.getElementById('inputEntryPrice').value) || 0,
+                exitPrice: parseFloat(document.getElementById('inputExitPrice').value) || 0,
                 note: document.getElementById('inputNote').value.trim()
             };
 
@@ -301,11 +308,12 @@
             document.getElementById('inputDate').value = record.date;
             document.getElementById('inputPlatform').value = record.platform;
             document.getElementById('inputAsset').value = record.asset;
-            document.getElementById('inputStrategy').value = record.strategy || '開盤突破';
+            document.getElementById('inputQuantity').value = record.quantity || '';
+            document.getElementById('inputStrategy').value = record.strategy || '';
             document.getElementById('inputPnL').value = record.pnl;
             document.getElementById('inputFee').value = record.fee;
-            document.getElementById('inputTargetProfit').value = record.targetProfit || '';
-            document.getElementById('inputMaxLoss').value = record.maxLoss || '';
+            document.getElementById('inputEntryPrice').value = record.entryPrice || '';
+            document.getElementById('inputExitPrice').value = record.exitPrice || '';
             document.getElementById('inputNote').value = record.note || '';
 
             document.getElementById('formTitle').textContent = '✏️ 編輯交易紀錄';
@@ -322,10 +330,12 @@
             document.getElementById('cancelEditBtn').classList.add('hidden');
             
             document.getElementById('inputAsset').value = '';
+            document.getElementById('inputQuantity').value = '';
+            document.getElementById('inputStrategy').value = '';
             document.getElementById('inputPnL').value = '';
             document.getElementById('inputFee').value = '0';
-            document.getElementById('inputTargetProfit').value = '';
-            document.getElementById('inputMaxLoss').value = '';
+            document.getElementById('inputEntryPrice').value = '';
+            document.getElementById('inputExitPrice').value = '';
             document.getElementById('inputNote').value = '';
             document.getElementById('inputDate').value = new Date().toISOString().slice(0, 10);
         }
@@ -352,21 +362,18 @@
 
             const excelData = records.map(r => {
                 const netPnL = r.pnl - r.fee;
-                const planRRR = (r.targetProfit && r.maxLoss && r.maxLoss > 0) ? (r.targetProfit / r.maxLoss).toFixed(2) : '-';
-                const actualRRR = (r.maxLoss && r.maxLoss > 0) ? (netPnL / r.maxLoss).toFixed(2) : '-';
 
                 return {
                     "交易日期": r.date,
                     "券商平台": r.platform,
                     "交易標的": r.asset,
+                    "交易數量": r.quantity || 0,
                     "策略分類": r.strategy || '未指定',
                     "實現損益 (NTD)": r.pnl,
                     "手續費與稅 (NTD)": r.fee,
                     "淨損益 (NTD)": netPnL,
-                    "預計獲利 (TP)": r.targetProfit || 0,
-                    "預計停損 (SL)": r.maxLoss || 0,
-                    "預期風報比": planRRR,
-                    "實際風險R數": actualRRR,
+                    "進場價格": r.entryPrice || 0,
+                    "出場價格": r.exitPrice || 0,
                     "交易檢討與備註": r.note || ''
                 };
             });
@@ -376,9 +383,9 @@
             XLSX.utils.book_append_sheet(workbook, worksheet, "交易明細日誌");
 
             worksheet['!cols'] = [
-                { wch: 12 }, { wch: 12 }, { wch: 15 }, { wch: 14 },
-                { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 12 },
-                { wch: 12 }, { wch: 10 }, { wch: 10 }, { wch: 30 }
+                { wch: 12 }, { wch: 12 }, { wch: 15 }, { wch: 10 },
+                { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 14 },
+                { wch: 12 }, { wch: 12 }, { wch: 30 }
             ];
 
             const dateStr = new Date().toISOString().slice(0, 10);
@@ -417,11 +424,12 @@
                             date: item.date || new Date().toISOString().slice(0, 10),
                             platform: item.platform || '未指定',
                             asset: item.asset || '未指定',
+                            quantity: parseFloat(item.quantity) || 0,
                             strategy: item.strategy || '其他/隨意進場',
                             pnl: parseFloat(item.pnl) || 0,
                             fee: parseFloat(item.fee) || 0,
-                            targetProfit: parseFloat(item.targetProfit) || 0,
-                            maxLoss: parseFloat(item.maxLoss) || 0,
+                            entryPrice: parseFloat(item.entryPrice) || parseFloat(item.targetProfit) || 0,
+                            exitPrice: parseFloat(item.exitPrice) || parseFloat(item.maxLoss) || 0,
                             note: item.note || ''
                         }));
 
@@ -532,8 +540,9 @@
                 tableBody.innerHTML = sortedRecords.map(r => {
                     const netPnL = r.pnl - r.fee;
                     const pnlClass = netPnL >= 0 ? 'text-emerald-400' : 'text-rose-400';
-                    const planRRR = (r.targetProfit && r.maxLoss && r.maxLoss > 0) ? (r.targetProfit / r.maxLoss).toFixed(2) : '-';
-                    const actualRRR = (r.maxLoss && r.maxLoss > 0) ? (netPnL / r.maxLoss).toFixed(2) : '-';
+                    const entryDisplay = r.entryPrice ? `$${r.entryPrice}` : '-';
+                    const exitDisplay = r.exitPrice ? `$${r.exitPrice}` : '-';
+                    const qtyDisplay = r.quantity ? `(${r.quantity})` : '';
 
                     const noteText = r.note ? r.note : '-';
                     const isLongNote = r.note && r.note.length > 10;
@@ -543,12 +552,12 @@
                             <td class="py-3 px-3 font-mono text-slate-300">${r.date}</td>
                             <td class="py-3 px-3"><span class="bg-slate-700 text-slate-300 text-xs px-2 py-1 rounded border border-slate-600">${r.platform}</span></td>
                             <td class="py-3 px-3">
-                                <div class="font-medium text-white">${r.asset}</div>
+                                <div class="font-medium text-white">${r.asset} <span class="text-xs text-amber-300 font-mono">${qtyDisplay}</span></div>
                                 <div class="text-xs text-indigo-400">${r.strategy || '未指定'}</div>
                             </td>
                             <td class="py-3 px-3 text-center font-mono text-xs">
-                                <span class="text-slate-400" title="預期風報比">預: ${planRRR}</span> / 
-                                <span class="${parseFloat(actualRRR) >= 1 ? 'text-emerald-400 font-bold' : 'text-slate-300'}" title="實際風險R數">實: ${actualRRR}</span>
+                                <span class="text-emerald-400" title="進場價格">${entryDisplay}</span> / 
+                                <span class="text-rose-400" title="出場價格">${exitDisplay}</span>
                             </td>
                             <td class="py-3 px-3 text-right font-mono text-slate-300">${r.pnl.toLocaleString()}</td>
                             <td class="py-3 px-3 text-right font-mono text-slate-400">${r.fee.toLocaleString()}</td>
