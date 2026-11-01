@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>多平台交易損益紀錄與風控儀表板 (雲端完整版)</title>
+    <title>多平台交易損益紀錄與風控儀表板 (進階時間與截圖版)</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Chart.js 圖表庫 -->
@@ -24,7 +24,7 @@
                 <h1 class="text-2xl md:text-3xl font-bold text-emerald-400 flex items-center gap-2">
                     📊 多平台交易損益紀錄與風控儀表板
                 </h1>
-                <p class="text-slate-400 text-sm mt-1">追蹤各平台交易績效、進出場價格、期望值與資金曲線（含日線圖表復盤功能）</p>
+                <p class="text-slate-400 text-sm mt-1">追蹤各平台交易績效、進出場時間點位、期望值與資金曲線（含K線截圖與雲端同步）</p>
             </div>
             <div class="flex flex-wrap items-center gap-3">
                 <label class="text-sm text-slate-300">統計月份：</label>
@@ -40,7 +40,7 @@
         </header>
 
         <!-- 頂部數據統計卡片區塊 -->
-        <section class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+        <section class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
             <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-md">
                 <span class="text-slate-400 text-xs block font-medium">總交易筆數</span>
                 <span id="statTotalCount" class="text-xl font-bold text-amber-400 mt-1 block">0 筆</span>
@@ -60,10 +60,6 @@
             <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-md" title="(勝率 * 平均獲利) - (敗率 * 平均虧損)">
                 <span class="text-slate-400 text-xs block font-medium">每筆期望值 (EV)</span>
                 <span id="statEV" class="text-xl font-bold text-sky-400 mt-1 block">$ 0</span>
-            </div>
-            <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-md">
-                <span class="text-slate-400 text-xs block font-medium">累計手續費/稅</span>
-                <span id="statTotalFee" class="text-xl font-bold text-rose-400 mt-1 block">$ 0</span>
             </div>
         </section>
 
@@ -120,18 +116,18 @@
                         </datalist>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-3">
+                    <!-- 進出場時間點位區塊 -->
+                    <div class="grid grid-cols-2 gap-3 p-3 bg-slate-700/40 rounded-lg border border-slate-700">
                         <div>
-                            <label class="block text-xs text-slate-400 mb-1">實現損益 (可為負)</label>
-                            <input type="number" id="inputPnL" placeholder="15000 或 -3000" step="any" required class="w-full bg-slate-700 text-white px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-emerald-500">
+                            <label class="block text-xs text-emerald-400 mb-1">⏰ 進場時間</label>
+                            <input type="time" id="inputEntryTime" class="w-full bg-slate-700 text-white px-3 py-1.5 rounded-lg border border-slate-600 text-xs focus:outline-none focus:border-emerald-500">
                         </div>
                         <div>
-                            <label class="block text-xs text-slate-400 mb-1">手續費 & 交易稅</label>
-                            <input type="number" id="inputFee" placeholder="0" min="0" step="any" value="0" class="w-full bg-slate-700 text-white px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-emerald-500">
+                            <label class="block text-xs text-rose-400 mb-1">⏰ 出場時間</label>
+                            <input type="time" id="inputExitTime" class="w-full bg-slate-700 text-white px-3 py-1.5 rounded-lg border border-slate-600 text-xs focus:outline-none focus:border-rose-500">
                         </div>
                     </div>
 
-                    <!-- 進出場價格區塊 -->
                     <div class="grid grid-cols-2 gap-3 p-3 bg-slate-700/40 rounded-lg border border-slate-700">
                         <div>
                             <label class="block text-xs text-emerald-400 mb-1">進場價格 (Entry)</label>
@@ -144,11 +140,16 @@
                     </div>
 
                     <div>
+                        <label class="block text-xs text-slate-400 mb-1">實際淨損益 (已含手續費與稅，可為負)</label>
+                        <input type="number" id="inputPnL" placeholder="15000 或 -3000" step="any" required class="w-full bg-slate-700 text-white px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-emerald-500 font-bold">
+                    </div>
+
+                    <div>
                         <label class="block text-xs text-slate-400 mb-1">交易檢討 / 策略備註</label>
                         <textarea id="inputNote" rows="2" placeholder="為什麼賺或賠？檢討停損紀律..." class="w-full bg-slate-700 text-white px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-emerald-500 text-sm"></textarea>
                     </div>
 
-                    <!-- 新增：上傳當日日線截圖功能 -->
+                    <!-- 上傳當日日線/分K走勢截圖功能 -->
                     <div>
                         <label class="block text-xs text-slate-400 mb-1">📷 上傳當日日線/分K走勢截圖 (選填)</label>
                         <input type="file" id="inputImageFile" accept="image/*" onchange="handleImageUpload(event)" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-700 file:text-slate-200 hover:file:bg-slate-600">
@@ -192,9 +193,7 @@
                             <th class="py-3 px-3">日期</th>
                             <th class="py-3 px-3">平台</th>
                             <th class="py-3 px-3">標的/數量/策略</th>
-                            <th class="py-3 px-3 text-center">進價 / 出價</th>
-                            <th class="py-3 px-3 text-right">實現損益</th>
-                            <th class="py-3 px-3 text-right">手續費/稅</th>
+                            <th class="py-3 px-3 text-center">進出時間 / 價格</th>
                             <th class="py-3 px-3 text-right">淨損益</th>
                             <th class="py-3 px-3">備註/截圖</th>
                             <th class="py-3 px-3 text-center">操作</th>
@@ -311,8 +310,9 @@
                 asset: document.getElementById('inputAsset').value.trim(),
                 quantity: parseFloat(document.getElementById('inputQuantity').value) || 0,
                 strategy: document.getElementById('inputStrategy').value.trim() || '其他/隨意進場',
-                pnl: parseFloat(document.getElementById('inputPnL').value) || 0,
-                fee: parseFloat(document.getElementById('inputFee').value) || 0,
+                pnl: parseFloat(document.getElementById('inputPnL').value) || 0, // 直接代表淨損益
+                entryTime: document.getElementById('inputEntryTime').value || '',
+                exitTime: document.getElementById('inputExitTime').value || '',
                 entryPrice: parseFloat(document.getElementById('inputEntryPrice').value) || 0,
                 exitPrice: parseFloat(document.getElementById('inputExitPrice').value) || 0,
                 note: document.getElementById('inputNote').value.trim(),
@@ -322,7 +322,6 @@
             if (editingId) {
                 const idx = records.findIndex(r => r.id === editingId);
                 if (idx !== -1) {
-                    // 如果編輯時沒有重新上傳圖片，保留原有的圖片
                     if (!recordData.imageBase64 && records[idx].imageBase64) {
                         recordData.imageBase64 = records[idx].imageBase64;
                     }
@@ -352,7 +351,8 @@
             document.getElementById('inputQuantity').value = record.quantity || '';
             document.getElementById('inputStrategy').value = record.strategy || '';
             document.getElementById('inputPnL').value = record.pnl;
-            document.getElementById('inputFee').value = record.fee;
+            document.getElementById('inputEntryTime').value = record.entryTime || '';
+            document.getElementById('inputExitTime').value = record.exitTime || '';
             document.getElementById('inputEntryPrice').value = record.entryPrice || '';
             document.getElementById('inputExitPrice').value = record.exitPrice || '';
             document.getElementById('inputNote').value = record.note || '';
@@ -382,7 +382,8 @@
             document.getElementById('inputQuantity').value = '';
             document.getElementById('inputStrategy').value = '';
             document.getElementById('inputPnL').value = '';
-            document.getElementById('inputFee').value = '0';
+            document.getElementById('inputEntryTime').value = '';
+            document.getElementById('inputExitTime').value = '';
             document.getElementById('inputEntryPrice').value = '';
             document.getElementById('inputExitPrice').value = '';
             document.getElementById('inputNote').value = '';
@@ -410,22 +411,19 @@
                 return;
             }
 
-            const excelData = records.map(r => {
-                const netPnL = r.pnl - r.fee;
-                return {
-                    "交易日期": r.date,
-                    "券商平台": r.platform,
-                    "交易標的": r.asset,
-                    "交易數量": r.quantity || 0,
-                    "策略分類": r.strategy || '未指定',
-                    "實現損益 (NTD)": r.pnl,
-                    "手續費與稅 (NTD)": r.fee,
-                    "淨損益 (NTD)": netPnL,
-                    "進場價格": r.entryPrice || 0,
-                    "出場價格": r.exitPrice || 0,
-                    "交易檢討與備註": r.note || ''
-                };
-            });
+            const excelData = records.map(r => ({
+                "交易日期": r.date,
+                "券商平台": r.platform,
+                "交易標的": r.asset,
+                "交易數量": r.quantity || 0,
+                "策略分類": r.strategy || '未指定',
+                "進場時間": r.entryTime || '',
+                "出場時間": r.exitTime || '',
+                "淨損益 (NTD)": r.pnl,
+                "進場價格": r.entryPrice || 0,
+                "出場價格": r.exitPrice || 0,
+                "交易檢討與備註": r.note || ''
+            }));
 
             const worksheet = XLSX.utils.json_to_sheet(excelData);
             const workbook = XLSX.utils.book_new();
@@ -433,12 +431,19 @@
 
             worksheet['!cols'] = [
                 { wch: 12 }, { wch: 12 }, { wch: 15 }, { wch: 10 },
-                { wch: 14 }, { wch: 14 }, { wch: 14 }, { wch: 14 },
+                { wch: 14 }, { wch: 10 }, { wch: 10 }, { wch: 14 },
                 { wch: 12 }, { wch: 12 }, { wch: 30 }
             ];
 
             const dateStr = new Date().toISOString().slice(0, 10);
-            XLSX.writeFile(workbook, `交易日誌紀錄_${dateStr}.xlsx`); }  function exportData() { const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(records, null, 2)); const dlAnchorElem = document.createElement('a'); dlAnchorElem.setAttribute("href", dataStr); dlAnchorElem.setAttribute("download", `pnl_backup_${new Date().toISOString().slice(0,10)}.json`);
+            XLSX.writeFile(workbook, `交易日誌紀錄_${dateStr}.xlsx`);
+        }
+
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(records, null, 2));
+            const dlAnchorElem = document.createElement('a');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", `pnl_backup_${new Date().toISOString().slice(0,10)}.json`);
             document.body.appendChild(dlAnchorElem);
             dlAnchorElem.click();
             dlAnchorElem.remove();
@@ -468,8 +473,9 @@
                             asset: item.asset || '未指定',
                             quantity: parseFloat(item.quantity) || 0,
                             strategy: item.strategy || '其他/隨意進場',
-                            pnl: parseFloat(item.pnl) || 0,
-                            fee: parseFloat(item.fee) || 0,
+                            pnl: parseFloat(item.pnl) !== undefined ? parseFloat(item.pnl) : (parseFloat(item.netPnL) || 0),
+                            entryTime: item.entryTime || '',
+                            exitTime: item.exitTime || '',
                             entryPrice: parseFloat(item.entryPrice) || 0,
                             exitPrice: parseFloat(item.exitPrice) || 0,
                             note: item.note || '',
@@ -493,17 +499,224 @@
             const record = records.find(r => r.id === id);
             if (!record) return;
 
-            document.getElementById('modalDateAsset').textContent = `${record.date} \vert{}${record.platform} - ${record.asset}`; document.getElementById('modalNoteContent').textContent = record.note \vert{}\vert{} '無備註說明';  const imgContainer = document.getElementById('modalImageContainer'); const modalImg = document.getElementById('modalImage'); if (record.imageBase64) { modalImg.src = record.imageBase64; imgContainer.classList.remove('hidden'); } else { modalImg.src = ''; imgContainer.classList.add('hidden'); }  document.getElementById('noteModal').classList.remove('hidden'); }  function closeNoteModal() { document.getElementById('noteModal').classList.add('hidden'); }  // 5. 畫面渲染與指標數據計算 function renderApp() { const selectedMonth = document.getElementById('monthFilter').value;  const filteredRecords = selectedMonth ? records.filter(r => r.date && r.date.startsWith(selectedMonth)) : records;  const sortedRecords = [...filteredRecords].sort((a, b) => new Date(b.date) - new Date(a.date));  let totalNetPnL = 0; let totalFee = 0; let winCount = 0; let lossCount = 0; let totalWinAmount = 0; let totalLossAmount = 0; const platformPnLMap = {};  filteredRecords.forEach(r => { const net = r.pnl - r.fee; totalNetPnL += net; totalFee += r.fee;  if (net > 0) { winCount++; totalWinAmount += net; } else if (net < 0) { lossCount++; totalLossAmount += Math.abs(net); }  platformPnLMap[r.platform] = (platformPnLMap[r.platform] \vert{}\vert{} 0) + net; });  const totalCount = filteredRecords.length; const winRate = totalCount > 0 ? ((winCount / totalCount) * 100).toFixed(1) : '0.0';  const avgWin = winCount > 0 ? (totalWinAmount / winCount) : 0; const avgLoss = lossCount > 0 ? (totalLossAmount / lossCount) : 0; const payoffRatio = avgLoss > 0 ? (avgWin / avgLoss).toFixed(2) : (avgWin > 0 ? '∞' : '0.00');  const winProb = totalCount > 0 ? (winCount / totalCount) : 0; const lossProb = totalCount > 0 ? (lossCount / totalCount) : 0; const ev = Math.round((winProb * avgWin) - (lossProb * avgLoss));  const pnlElem = document.getElementById('statMonthlyPnL'); pnlElem.textContent = `$ ${totalNetPnL.toLocaleString()}`;
-            pnlElem.className = `text-xl font-extrabold mt-1 block ${totalNetPnL >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;  document.getElementById('statWinRate').textContent = `${winRate} %`;
-            document.getElementById('statTotalCount').textContent = `${totalCount} 筆`; document.getElementById('statPayoffRatio').textContent = payoffRatio;  const evElem = document.getElementById('statEV'); evElem.textContent = `$ ${ev.toLocaleString()}`;
-            evElem.className = `text-xl font-bold mt-1 block ${ev >= 0 ? 'text-sky-400' : 'text-rose-400'}`;  document.getElementById('statTotalFee').textContent = `$ ${totalFee.toLocaleString()}`;
+            document.getElementById('modalDateAsset').textContent = `${record.date} (${record.entryTime || '--:--'} ~ ${record.exitTime || '--:--'}) | ${record.platform} - ${record.asset}`;
+            document.getElementById('modalNoteContent').textContent = record.note || '無備註說明';
+            
+            const imgContainer = document.getElementById('modalImageContainer');
+            const modalImg = document.getElementById('modalImage');
+            if (record.imageBase64) {
+                modalImg.src = record.imageBase64;
+                imgContainer.classList.remove('hidden');
+            } else {
+                modalImg.src = '';
+                imgContainer.classList.add('hidden');
+            }
+
+            document.getElementById('noteModal').classList.remove('hidden');
+        }
+
+        function closeNoteModal() {
+            document.getElementById('noteModal').classList.add('hidden');
+        }
+
+        // 5. 畫面渲染與指標數據計算
+        function renderApp() {
+            const selectedMonth = document.getElementById('monthFilter').value;
+            
+            const filteredRecords = selectedMonth 
+                ? records.filter(r => r.date && r.date.startsWith(selectedMonth))
+                : records;
+
+            const sortedRecords = [...filteredRecords].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            let totalNetPnL = 0;
+            let winCount = 0;
+            let lossCount = 0;
+            let totalWinAmount = 0;
+            let totalLossAmount = 0;
+            const platformPnLMap = {};
+
+            filteredRecords.forEach(r => {
+                const net = r.pnl; // 直接採用淨損益
+                totalNetPnL += net;
+
+                if (net > 0) {
+                    winCount++;
+                    totalWinAmount += net;
+                } else if (net < 0) {
+                    lossCount++;
+                    totalLossAmount += Math.abs(net);
+                }
+
+                platformPnLMap[r.platform] = (platformPnLMap[r.platform] || 0) + net;
+            });
+
+            const totalCount = filteredRecords.length;
+            const winRate = totalCount > 0 ? ((winCount / totalCount) * 100).toFixed(1) : '0.0';
+
+            const avgWin = winCount > 0 ? (totalWinAmount / winCount) : 0;
+            const avgLoss = lossCount > 0 ? (totalLossAmount / lossCount) : 0;
+            const payoffRatio = avgLoss > 0 ? (avgWin / avgLoss).toFixed(2) : (avgWin > 0 ? '∞' : '0.00');
+
+            const winProb = totalCount > 0 ? (winCount / totalCount) : 0;
+            const lossProb = totalCount > 0 ? (lossCount / totalCount) : 0;
+            const ev = Math.round((winProb * avgWin) - (lossProb * avgLoss));
+
+            const pnlElem = document.getElementById('statMonthlyPnL');
+            pnlElem.textContent = `$ ${totalNetPnL.toLocaleString()}`;
+            pnlElem.className = `text-xl font-extrabold mt-1 block ${totalNetPnL >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;
+
+            document.getElementById('statWinRate').textContent = `${winRate} %`;
+            document.getElementById('statTotalCount').textContent = `${totalCount} 筆`;
+            document.getElementById('statPayoffRatio').textContent = payoffRatio;
+            
+            const evElem = document.getElementById('statEV');
+            evElem.textContent = `$ ${ev.toLocaleString()}`;
+            evElem.className = `text-xl font-bold mt-1 block ${ev >= 0 ? 'text-sky-400' : 'text-rose-400'}`;
 
             // 渲染明細清單
             const tableBody = document.getElementById('recordsTableBody');
             if (sortedRecords.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="9" class="text-center py-6 text-slate-500">尚無交易紀錄</td></tr>`;
+                tableBody.innerHTML = `<tr><td colspan="7" class="text-center py-6 text-slate-500">尚無交易紀錄</td></tr>`;
             } else {
                 tableBody.innerHTML = sortedRecords.map(r => {
-                    const netPnL = r.pnl - r.fee;
+                    const netPnL = r.pnl;
                     const pnlClass = netPnL >= 0 ? 'text-emerald-400' : 'text-rose-400';
-                    const entryDisplay = r.entryPrice ? `$${r.entryPrice}` : '-'; const exitDisplay = r.exitPrice ? `$${r.
+                    const timeDisplay = (r.entryTime || r.exitTime) ? `${r.entryTime || '--:--'} ~ ${r.exitTime || '--:--'}` : '-';
+                    const priceDisplay = (r.entryPrice || r.exitPrice) ? `$${r.entryPrice || 0} / $${r.exitPrice || 0}` : '-';
+                    const qtyDisplay = r.quantity ? `(${r.quantity})` : '';
+
+                    const noteText = r.note ? r.note : '-';
+                    const hasImage = Boolean(r.imageBase64);
+                    const isLongNote = (r.note && r.note.length > 8) || hasImage;
+
+                    return `
+                        <tr class="hover:bg-slate-700/30 transition">
+                            <td class="py-3 px-3 font-mono text-slate-300">${r.date}</td>
+                            <td class="py-3 px-3"><span class="bg-slate-700 text-slate-300 text-xs px-2 py-1 rounded border border-slate-600">${r.platform}</span></td>
+                            <td class="py-3 px-3">
+                                <div class="font-medium text-white">${r.asset} <span class="text-xs text-amber-300 font-mono">${qtyDisplay}</span></div>
+                                <div class="text-xs text-indigo-400">${r.strategy || '未指定'}</div>
+                            </td>
+                            <td class="py-3 px-3 text-center font-mono text-xs">
+                                <div class="text-slate-300">${timeDisplay}</div>
+                                <div class="text-slate-400">${priceDisplay}</div>
+                            </td>
+                            <td class="py-3 px-3 text-right font-mono font-bold ${pnlClass}">${netPnL > 0 ? '+' : ''}${netPnL.toLocaleString()}</td>
+                            <td class="py-3 px-3 text-slate-400 text-xs max-w-[140px]">
+                                ${isLongNote ? `
+                                    <button onclick="openNoteModal('${r.id}')" class="text-left text-emerald-400 hover:underline truncate w-full block flex items-center gap-1">
+                                        ${hasImage ? '📷' : ''} 🔍 ${r.note ? r.note.slice(0, 6) + '...' : '查看截圖'}
+                                    </button>
+                                ` : `
+                                    <span class="truncate block" title="${noteText}">${noteText}</span>
+                                `}
+                            </td>
+                            <td class="py-3 px-3 text-center space-x-2">
+                                <button onclick="editRecord('${r.id}')" class="text-slate-400 hover:text-emerald-400 transition text-xs">編輯</button>
+                                <button onclick="deleteRecord('${r.id}')" class="text-slate-500 hover:text-rose-400 transition text-xs">刪除</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            renderPlatformChart(platformPnLMap);
+            renderDailyCumulativeChart(filteredRecords);
+        }
+
+        // 6. 繪製圖表
+        function renderPlatformChart(platformData) {
+            const ctx = document.getElementById('platformChart').getContext('2d');
+            const labels = Object.keys(platformData);
+            const dataValues = Object.values(platformData);
+
+            if (chartInstance) chartInstance.destroy();
+
+            const backgroundColors = dataValues.map(val => val >= 0 ? 'rgba(52, 211, 153, 0.7)' : 'rgba(251, 113, 133, 0.7)');
+
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: '平台淨損益 (NTD)',
+                        data: dataValues,
+                        backgroundColor: backgroundColors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#94a3b8' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#94a3b8' }
+                        }
+                    }
+                }
+            });
+        }
+
+        function renderDailyCumulativeChart(filteredRecords) {
+            const ctx = document.getElementById('dailyCumulativeChart').getContext('2d');
+            
+            const sorted = [...filteredRecords].sort((a, b) => new Date(a.date) - new Date(b.date));
+            const dailyMap = {};
+            sorted.forEach(r => {
+                const net = r.pnl;
+                dailyMap[r.date] = (dailyMap[r.date] || 0) + net;
+            });
+
+            let cumulative = 0;
+            const dates = [];
+            const cumulativeValues = [];
+
+            Object.keys(dailyMap).sort().forEach(date => {
+                cumulative += dailyMap[date];
+                dates.push(date);
+                cumulativeValues.push(cumulative);
+            });
+
+            if (dailyCumulativeChartInstance) dailyCumulativeChartInstance.destroy();
+
+            dailyCumulativeChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [{
+                        label: '累積資金曲線 (NTD)',
+                        data: cumulativeValues,
+                        borderColor: 'rgba(52, 211, 153, 1)',
+                        backgroundColor: 'rgba(52, 211, 153, 0.1)',
+                        fill: true,
+                        tension: 0.1,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: {
+                            grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                            ticks: { color: '#94a3b8' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#94a3b8' }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
