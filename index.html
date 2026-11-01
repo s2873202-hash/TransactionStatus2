@@ -24,7 +24,7 @@
                 <h1 class="text-2xl md:text-3xl font-bold text-emerald-400 flex items-center gap-2">
                     📊 多平台交易損益紀錄與風控儀表板
                 </h1>
-                <p class="text-slate-400 text-sm mt-1">追蹤各平台交易績效、進出場價格、期望值與資金曲線（雲端即時同步）</p>
+                <p class="text-slate-400 text-sm mt-1">追蹤各平台交易績效、進出場價格、期望值與資金曲線（含日線圖表復盤功能）</p>
             </div>
             <div class="flex flex-wrap items-center gap-3">
                 <label class="text-sm text-slate-300">統計月份：</label>
@@ -86,14 +86,12 @@
                         </div>
                         <div>
                             <label class="block text-xs text-slate-400 mb-1">交易平台/券商</label>
-                            <input type="text" id="inputPlatform" placeholder="例如：統一證券、幣安" list="platformOptions" required class="w-full bg-slate-700 text-white px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-emerald-500">
+                            <input type="text" id="inputPlatform" placeholder="例如：統一證券、群益" list="platformOptions" required class="w-full bg-slate-700 text-white px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-emerald-500">
                             <datalist id="platformOptions">
                                 <option value="統一證券">
-                                <option value="富邦證券">
-                                <option value="凱基證券">
-                                <option value="元大期貨">
+                                <option value="永豐證券">
                                 <option value="群益期貨">
-                                <option value="Binance">
+                                <option value="富邦證券">
                             </datalist>
                         </div>
                     </div>
@@ -101,23 +99,23 @@
                     <div class="grid grid-cols-3 gap-3">
                         <div class="col-span-2">
                             <label class="block text-xs text-slate-400 mb-1">交易標的 / 代號</label>
-                            <input type="text" id="inputAsset" placeholder="例如：2330 台積電" required class="w-full bg-slate-700 text-white px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-emerald-500">
+                            <input type="text" id="inputAsset" placeholder="例如：光頡、2330台積電" required class="w-full bg-slate-700 text-white px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-emerald-500">
                         </div>
                         <div>
-                            <label class="block text-xs text-slate-400 mb-1">交易數量 (張/股)</label>
-                            <input type="number" id="inputQuantity" placeholder="例如 1 或 1000" min="0" step="any" class="w-full bg-slate-700 text-white px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-emerald-500">
+                            <label class="block text-xs text-slate-400 mb-1">交易數量 (張)</label>
+                            <input type="number" id="inputQuantity" placeholder="例如 1 或 5" min="0" step="any" class="w-full bg-slate-700 text-white px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-emerald-500">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-xs text-slate-400 mb-1">交易策略分類 (可選或自訂)</label>
-                        <input type="text" id="inputStrategy" placeholder="請選擇或自行輸入策略名稱" list="strategyOptions" class="w-full bg-slate-700 text-white px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-emerald-500">
+                        <label class="block text-xs text-slate-400 mb-1">交易策略分類</label>
+                        <input type="text" id="inputStrategy" placeholder="例如：開盤突破、緩跌拉高不過高後空" list="strategyOptions" class="w-full bg-slate-700 text-white px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-emerald-500">
                         <datalist id="strategyOptions">
                             <option value="開盤突破">
-                            <option value="VWAP回測">
-                            <option value="動能當沖">
-                            <option value="關鍵關卡彈">
-                            <option value="波段續抱">
+                            <option value="開盤衝高後跌破開盤價">
+                            <option value="緩跌拉高不過高後空">
+                            <option value="拉高空">
+                            <option value="續弱">
                             <option value="其他/隨意進場">
                         </datalist>
                     </div>
@@ -136,18 +134,29 @@
                     <!-- 進出場價格區塊 -->
                     <div class="grid grid-cols-2 gap-3 p-3 bg-slate-700/40 rounded-lg border border-slate-700">
                         <div>
-                            <label class="block text-xs text-emerald-400 mb-1">進場價格 (Cost)</label>
-                            <input type="number" id="inputEntryPrice" placeholder="例如 980" min="0" step="any" class="w-full bg-slate-700 text-white px-3 py-1.5 rounded-lg border border-slate-600 text-xs focus:outline-none focus:border-emerald-500">
+                            <label class="block text-xs text-emerald-400 mb-1">進場價格 (Entry)</label>
+                            <input type="number" id="inputEntryPrice" placeholder="例如 163" min="0" step="any" class="w-full bg-slate-700 text-white px-3 py-1.5 rounded-lg border border-slate-600 text-xs focus:outline-none focus:border-emerald-500">
                         </div>
                         <div>
                             <label class="block text-xs text-rose-400 mb-1">出場價格 (Exit)</label>
-                            <input type="number" id="inputExitPrice" placeholder="例如 1020" min="0" step="any" class="w-full bg-slate-700 text-white px-3 py-1.5 rounded-lg border border-slate-600 text-xs focus:outline-none focus:border-rose-500">
+                            <input type="number" id="inputExitPrice" placeholder="例如 169" min="0" step="any" class="w-full bg-slate-700 text-white px-3 py-1.5 rounded-lg border border-slate-600 text-xs focus:outline-none focus:border-rose-500">
                         </div>
                     </div>
 
                     <div>
                         <label class="block text-xs text-slate-400 mb-1">交易檢討 / 策略備註</label>
-                        <textarea id="inputNote" rows="2" placeholder="是否有遵守紀律？進場理由是否成立？" class="w-full bg-slate-700 text-white px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-emerald-500 text-sm"></textarea>
+                        <textarea id="inputNote" rows="2" placeholder="為什麼賺或賠？檢討停損紀律..." class="w-full bg-slate-700 text-white px-3 py-2 rounded-lg border border-slate-600 focus:outline-none focus:border-emerald-500 text-sm"></textarea>
+                    </div>
+
+                    <!-- 新增：上傳當日日線截圖功能 -->
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">📷 上傳當日日線/分K走勢截圖 (選填)</label>
+                        <input type="file" id="inputImageFile" accept="image/*" onchange="handleImageUpload(event)" class="w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-700 file:text-slate-200 hover:file:bg-slate-600">
+                        <input type="hidden" id="inputImageBase64" value="">
+                        <div id="imagePreviewContainer" class="mt-2 hidden relative">
+                            <img id="imagePreview" src="" alt="截圖預覽" class="max-h-32 rounded-lg border border-slate-600">
+                            <button type="button" onclick="clearImage()" class="absolute top-1 left-1 bg-rose-600 text-white text-xs px-1.5 py-0.5 rounded shadow">移除圖片</button>
+                        </div>
                     </div>
 
                     <button type="submit" id="submitBtn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2.5 rounded-lg transition shadow-md">
@@ -187,7 +196,7 @@
                             <th class="py-3 px-3 text-right">實現損益</th>
                             <th class="py-3 px-3 text-right">手續費/稅</th>
                             <th class="py-3 px-3 text-right">淨損益</th>
-                            <th class="py-3 px-3">備註</th>
+                            <th class="py-3 px-3">備註/截圖</th>
                             <th class="py-3 px-3 text-center">操作</th>
                         </tr>
                     </thead>
@@ -200,12 +209,16 @@
 
     </div>
 
-    <!-- 備註詳情 Modal 彈窗 -->
+    <!-- 備註與截圖檢視 Modal 彈窗 -->
     <div id="noteModal" class="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-slate-800 border border-slate-700 rounded-xl max-w-md w-full p-6 shadow-2xl relative">
-            <h3 class="text-lg font-bold text-emerald-400 mb-2">📝 交易策略與備註詳情</h3>
+        <div class="bg-slate-800 border border-slate-700 rounded-xl max-w-2xl w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
+            <h3 class="text-lg font-bold text-emerald-400 mb-2">📝 交易策略、檢討與K線截圖</h3>
             <div id="modalDateAsset" class="text-xs text-slate-400 mb-4"></div>
-            <div id="modalNoteContent" class="bg-slate-900/80 p-4 rounded-lg border border-slate-700/60 text-slate-200 text-sm leading-relaxed whitespace-pre-wrap max-h-60 overflow-y-auto"></div>
+            <div id="modalNoteContent" class="bg-slate-900/80 p-4 rounded-lg border border-slate-700/60 text-slate-200 text-sm leading-relaxed whitespace-pre-wrap mb-4"></div>
+            <div id="modalImageContainer" class="hidden mb-4">
+                <p class="text-xs text-slate-400 mb-2">走勢圖表參考：</p>
+                <img id="modalImage" src="" alt="K線截圖" class="rounded-lg border border-slate-600 max-h-96 mx-auto">
+            </div>
             <div class="mt-6 flex justify-end">
                 <button onclick="closeNoteModal()" class="bg-slate-700 hover:bg-slate-600 text-slate-200 px-4 py-2 rounded-lg text-sm transition">關閉</button>
             </div>
@@ -265,6 +278,27 @@
             localStorage.setItem('pnl_tracker_records', JSON.stringify(records));
         }
 
+        // 圖片上傳轉 Base64
+        function handleImageUpload(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(uploadEvent) {
+                const base64Str = uploadEvent.target.result;
+                document.getElementById('inputImageBase64').value = base64Str;
+                document.getElementById('imagePreview').src = base64Str;
+                document.getElementById('imagePreviewContainer').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function clearImage() {
+            document.getElementById('inputImageBase64').value = '';
+            document.getElementById('inputImageFile').value = '';
+            document.getElementById('imagePreviewContainer').classList.add('hidden');
+            document.getElementById('imagePreview').src = '';
+        }
+
         // 3. 表單送出 (新增/編輯)
         function handleFormSubmit(e) {
             e.preventDefault();
@@ -281,12 +315,19 @@
                 fee: parseFloat(document.getElementById('inputFee').value) || 0,
                 entryPrice: parseFloat(document.getElementById('inputEntryPrice').value) || 0,
                 exitPrice: parseFloat(document.getElementById('inputExitPrice').value) || 0,
-                note: document.getElementById('inputNote').value.trim()
+                note: document.getElementById('inputNote').value.trim(),
+                imageBase64: document.getElementById('inputImageBase64').value || ''
             };
 
             if (editingId) {
                 const idx = records.findIndex(r => r.id === editingId);
-                if (idx !== -1) records[idx] = recordData;
+                if (idx !== -1) {
+                    // 如果編輯時沒有重新上傳圖片，保留原有的圖片
+                    if (!recordData.imageBase64 && records[idx].imageBase64) {
+                        recordData.imageBase64 = records[idx].imageBase64;
+                    }
+                    records[idx] = recordData;
+                }
             } else {
                 records.push(recordData);
             }
@@ -315,6 +356,14 @@
             document.getElementById('inputEntryPrice').value = record.entryPrice || '';
             document.getElementById('inputExitPrice').value = record.exitPrice || '';
             document.getElementById('inputNote').value = record.note || '';
+            
+            if (record.imageBase64) {
+                document.getElementById('inputImageBase64').value = record.imageBase64;
+                document.getElementById('imagePreview').src = record.imageBase64;
+                document.getElementById('imagePreviewContainer').classList.remove('hidden');
+            } else {
+                clearImage();
+            }
 
             document.getElementById('formTitle').textContent = '✏️ 編輯交易紀錄';
             document.getElementById('submitBtn').textContent = '更新紀錄';
@@ -338,6 +387,7 @@
             document.getElementById('inputExitPrice').value = '';
             document.getElementById('inputNote').value = '';
             document.getElementById('inputDate').value = new Date().toISOString().slice(0, 10);
+            clearImage();
         }
 
         function deleteRecord(id) {
@@ -362,7 +412,6 @@
 
             const excelData = records.map(r => {
                 const netPnL = r.pnl - r.fee;
-
                 return {
                     "交易日期": r.date,
                     "券商平台": r.platform,
@@ -389,14 +438,7 @@
             ];
 
             const dateStr = new Date().toISOString().slice(0, 10);
-            XLSX.writeFile(workbook, `交易日誌紀錄_${dateStr}.xlsx`);
-        }
-
-        function exportData() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(records, null, 2));
-            const dlAnchorElem = document.createElement('a');
-            dlAnchorElem.setAttribute("href", dataStr);
-            dlAnchorElem.setAttribute("download", `pnl_backup_${new Date().toISOString().slice(0,10)}.json`);
+            XLSX.writeFile(workbook, `交易日誌紀錄_${dateStr}.xlsx`); }  function exportData() { const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(records, null, 2)); const dlAnchorElem = document.createElement('a'); dlAnchorElem.setAttribute("href", dataStr); dlAnchorElem.setAttribute("download", `pnl_backup_${new Date().toISOString().slice(0,10)}.json`);
             document.body.appendChild(dlAnchorElem);
             dlAnchorElem.click();
             dlAnchorElem.remove();
@@ -414,12 +456,12 @@
                     if (!Array.isArray(importedRecords) && typeof importedRecords === 'object') {
                         const possibleKeys = ['records', 'data'];
                         const foundKey = possibleKeys.find(k => Array.isArray(importedRecords[k])) || 
-                                         Object.keys(importedRecords).find(key => Array.isArray(importedRecords[key]));
+                                                 Object.keys(importedRecords).find(key => Array.isArray(importedRecords[key]));
                         if (foundKey) importedRecords = importedRecords[foundKey];
                     }
 
                     if (Array.isArray(importedRecords)) {
-                        importedRecords = importedRecords.map(item => ({
+                        records = importedRecords.map(item => ({
                             id: item.id || Date.now().toString() + Math.random().toString().slice(2, 6),
                             date: item.date || new Date().toISOString().slice(0, 10),
                             platform: item.platform || '未指定',
@@ -428,21 +470,11 @@
                             strategy: item.strategy || '其他/隨意進場',
                             pnl: parseFloat(item.pnl) || 0,
                             fee: parseFloat(item.fee) || 0,
-                            entryPrice: parseFloat(item.entryPrice) || parseFloat(item.targetProfit) || 0,
-                            exitPrice: parseFloat(item.exitPrice) || parseFloat(item.maxLoss) || 0,
-                            note: item.note || ''
+                            entryPrice: parseFloat(item.entryPrice) || 0,
+                            exitPrice: parseFloat(item.exitPrice) || 0,
+                            note: item.note || '',
+                            imageBase64: item.imageBase64 || ''
                         }));
-
-                        const isOverwrite = confirm('點擊「確定」將【覆蓋】雲端資料；點擊「取消」將【合併】新舊資料。');
-                        
-                        if (isOverwrite) {
-                            records = importedRecords;
-                        } else {
-                            const existingIds = new Set(records.map(r => r.id));
-                            importedRecords.forEach(item => {
-                                if (!existingIds.has(item.id)) records.push(item);
-                            });
-                        }
 
                         saveData();
                         alert('成功匯入資料並已同步！');
@@ -461,76 +493,10 @@
             const record = records.find(r => r.id === id);
             if (!record) return;
 
-            document.getElementById('modalDateAsset').textContent = `${record.date} | ${record.platform} - ${record.asset}`;
-            document.getElementById('modalNoteContent').textContent = record.note || '無備註說明';
-            document.getElementById('noteModal').classList.remove('hidden');
-        }
-
-        function closeNoteModal() {
-            document.getElementById('noteModal').classList.add('hidden');
-        }
-
-        // 5. 畫面渲染與指標數據計算
-        function renderApp() {
-            const selectedMonth = document.getElementById('monthFilter').value;
-            
-            const filteredRecords = selectedMonth 
-                ? records.filter(r => r.date && r.date.startsWith(selectedMonth))
-                : records;
-
-            const sortedRecords = [...filteredRecords].sort((a, b) => new Date(b.date) - new Date(a.date));
-
-            let totalNetPnL = 0;
-            let totalFee = 0;
-            let winCount = 0;
-            let lossCount = 0;
-            let totalWinAmount = 0;
-            let totalLossAmount = 0;
-            const platformPnLMap = {};
-
-            filteredRecords.forEach(r => {
-                const net = r.pnl - r.fee;
-                totalNetPnL += net;
-                totalFee += r.fee;
-
-                if (net > 0) {
-                    winCount++;
-                    totalWinAmount += net;
-                } else if (net < 0) {
-                    lossCount++;
-                    totalLossAmount += Math.abs(net);
-                }
-
-                platformPnLMap[r.platform] = (platformPnLMap[r.platform] || 0) + net;
-            });
-
-            const totalCount = filteredRecords.length;
-            const winRate = totalCount > 0 ? ((winCount / totalCount) * 100).toFixed(1) : '0.0';
-
-            // 平均盈虧比 (Payoff Ratio)
-            const avgWin = winCount > 0 ? (totalWinAmount / winCount) : 0;
-            const avgLoss = lossCount > 0 ? (totalLossAmount / lossCount) : 0;
-            const payoffRatio = avgLoss > 0 ? (avgWin / avgLoss).toFixed(2) : (avgWin > 0 ? '∞' : '0.00');
-
-            // 每筆期望值 (EV)
-            const winProb = totalCount > 0 ? (winCount / totalCount) : 0;
-            const lossProb = totalCount > 0 ? (lossCount / totalCount) : 0;
-            const ev = Math.round((winProb * avgWin) - (lossProb * avgLoss));
-
-            // 更新數據卡片
-            const pnlElem = document.getElementById('statMonthlyPnL');
-            pnlElem.textContent = `$ ${totalNetPnL.toLocaleString()}`;
-            pnlElem.className = `text-xl font-extrabold mt-1 block ${totalNetPnL >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;
-
-            document.getElementById('statWinRate').textContent = `${winRate} %`;
-            document.getElementById('statTotalCount').textContent = `${totalCount} 筆`;
-            document.getElementById('statPayoffRatio').textContent = payoffRatio;
-            
-            const evElem = document.getElementById('statEV');
-            evElem.textContent = `$ ${ev.toLocaleString()}`;
-            evElem.className = `text-xl font-bold mt-1 block ${ev >= 0 ? 'text-sky-400' : 'text-rose-400'}`;
-
-            document.getElementById('statTotalFee').textContent = `$ ${totalFee.toLocaleString()}`;
+            document.getElementById('modalDateAsset').textContent = `${record.date} \vert{}${record.platform} - ${record.asset}`; document.getElementById('modalNoteContent').textContent = record.note \vert{}\vert{} '無備註說明';  const imgContainer = document.getElementById('modalImageContainer'); const modalImg = document.getElementById('modalImage'); if (record.imageBase64) { modalImg.src = record.imageBase64; imgContainer.classList.remove('hidden'); } else { modalImg.src = ''; imgContainer.classList.add('hidden'); }  document.getElementById('noteModal').classList.remove('hidden'); }  function closeNoteModal() { document.getElementById('noteModal').classList.add('hidden'); }  // 5. 畫面渲染與指標數據計算 function renderApp() { const selectedMonth = document.getElementById('monthFilter').value;  const filteredRecords = selectedMonth ? records.filter(r => r.date && r.date.startsWith(selectedMonth)) : records;  const sortedRecords = [...filteredRecords].sort((a, b) => new Date(b.date) - new Date(a.date));  let totalNetPnL = 0; let totalFee = 0; let winCount = 0; let lossCount = 0; let totalWinAmount = 0; let totalLossAmount = 0; const platformPnLMap = {};  filteredRecords.forEach(r => { const net = r.pnl - r.fee; totalNetPnL += net; totalFee += r.fee;  if (net > 0) { winCount++; totalWinAmount += net; } else if (net < 0) { lossCount++; totalLossAmount += Math.abs(net); }  platformPnLMap[r.platform] = (platformPnLMap[r.platform] \vert{}\vert{} 0) + net; });  const totalCount = filteredRecords.length; const winRate = totalCount > 0 ? ((winCount / totalCount) * 100).toFixed(1) : '0.0';  const avgWin = winCount > 0 ? (totalWinAmount / winCount) : 0; const avgLoss = lossCount > 0 ? (totalLossAmount / lossCount) : 0; const payoffRatio = avgLoss > 0 ? (avgWin / avgLoss).toFixed(2) : (avgWin > 0 ? '∞' : '0.00');  const winProb = totalCount > 0 ? (winCount / totalCount) : 0; const lossProb = totalCount > 0 ? (lossCount / totalCount) : 0; const ev = Math.round((winProb * avgWin) - (lossProb * avgLoss));  const pnlElem = document.getElementById('statMonthlyPnL'); pnlElem.textContent = `$ ${totalNetPnL.toLocaleString()}`;
+            pnlElem.className = `text-xl font-extrabold mt-1 block ${totalNetPnL >= 0 ? 'text-emerald-400' : 'text-rose-400'}`;  document.getElementById('statWinRate').textContent = `${winRate} %`;
+            document.getElementById('statTotalCount').textContent = `${totalCount} 筆`; document.getElementById('statPayoffRatio').textContent = payoffRatio;  const evElem = document.getElementById('statEV'); evElem.textContent = `$ ${ev.toLocaleString()}`;
+            evElem.className = `text-xl font-bold mt-1 block ${ev >= 0 ? 'text-sky-400' : 'text-rose-400'}`;  document.getElementById('statTotalFee').textContent = `$ ${totalFee.toLocaleString()}`;
 
             // 渲染明細清單
             const tableBody = document.getElementById('recordsTableBody');
@@ -540,147 +506,4 @@
                 tableBody.innerHTML = sortedRecords.map(r => {
                     const netPnL = r.pnl - r.fee;
                     const pnlClass = netPnL >= 0 ? 'text-emerald-400' : 'text-rose-400';
-                    const entryDisplay = r.entryPrice ? `$${r.entryPrice}` : '-';
-                    const exitDisplay = r.exitPrice ? `$${r.exitPrice}` : '-';
-                    const qtyDisplay = r.quantity ? `(${r.quantity})` : '';
-
-                    const noteText = r.note ? r.note : '-';
-                    const isLongNote = r.note && r.note.length > 10;
-
-                    return `
-                        <tr class="hover:bg-slate-700/30 transition">
-                            <td class="py-3 px-3 font-mono text-slate-300">${r.date}</td>
-                            <td class="py-3 px-3"><span class="bg-slate-700 text-slate-300 text-xs px-2 py-1 rounded border border-slate-600">${r.platform}</span></td>
-                            <td class="py-3 px-3">
-                                <div class="font-medium text-white">${r.asset} <span class="text-xs text-amber-300 font-mono">${qtyDisplay}</span></div>
-                                <div class="text-xs text-indigo-400">${r.strategy || '未指定'}</div>
-                            </td>
-                            <td class="py-3 px-3 text-center font-mono text-xs">
-                                <span class="text-emerald-400" title="進場價格">${entryDisplay}</span> / 
-                                <span class="text-rose-400" title="出場價格">${exitDisplay}</span>
-                            </td>
-                            <td class="py-3 px-3 text-right font-mono text-slate-300">${r.pnl.toLocaleString()}</td>
-                            <td class="py-3 px-3 text-right font-mono text-slate-400">${r.fee.toLocaleString()}</td>
-                            <td class="py-3 px-3 text-right font-mono font-bold ${pnlClass}">${netPnL > 0 ? '+' : ''}${netPnL.toLocaleString()}</td>
-                            <td class="py-3 px-3 text-slate-400 text-xs max-w-[140px]">
-                                ${isLongNote ? `
-                                    <button onclick="openNoteModal('${r.id}')" class="text-left text-emerald-400 hover:underline truncate w-full block">
-                                        🔍 ${r.note.slice(0, 8)}...
-                                    </button>
-                                ` : `
-                                    <span class="truncate block" title="${noteText}">${noteText}</span>
-                                `}
-                            </td>
-                            <td class="py-3 px-3 text-center space-x-2">
-                                <button onclick="editRecord('${r.id}')" class="text-slate-400 hover:text-emerald-400 transition text-xs">編輯</button>
-                                <button onclick="deleteRecord('${r.id}')" class="text-slate-500 hover:text-rose-400 transition text-xs">刪除</button>
-                            </td>
-                        </tr>
-                    `;
-                }).join('');
-            }
-
-            renderPlatformChart(platformPnLMap);
-            renderDailyCumulativeChart(filteredRecords);
-        }
-
-        // 6. 繪製柱狀圖與累計資金曲線圖
-        function renderPlatformChart(platformData) {
-            const ctx = document.getElementById('platformChart').getContext('2d');
-            const labels = Object.keys(platformData);
-            const dataValues = Object.values(platformData);
-
-            if (chartInstance) chartInstance.destroy();
-
-            const backgroundColors = dataValues.map(val => val >= 0 ? 'rgba(52, 211, 153, 0.7)' : 'rgba(251, 113, 133, 0.7)');
-            const borderColors = dataValues.map(val => val >= 0 ? '#10b981' : '#f43f5e');
-
-            chartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels.length > 0 ? labels : ['無資料'],
-                    datasets: [{
-                        label: '當期淨損益',
-                        data: labels.length > 0 ? dataValues : [0],
-                        backgroundColor: backgroundColors,
-                        borderColor: borderColors,
-                        borderWidth: 1.5,
-                        borderRadius: 6
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
-                    scales: {
-                        x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
-                        y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }
-                    }
-                }
-            });
-        }
-
-        function renderDailyCumulativeChart(monthlyRecords) {
-            const ctx = document.getElementById('dailyCumulativeChart').getContext('2d');
-
-            if (dailyCumulativeChartInstance) dailyCumulativeChartInstance.destroy();
-
-            if (monthlyRecords.length === 0) {
-                dailyCumulativeChartInstance = new Chart(ctx, {
-                    type: 'line',
-                    data: { labels: ['無資料'], datasets: [{ data: [0] }] },
-                    options: { responsive: true, maintainAspectRatio: false }
-                });
-                return;
-            }
-
-            const chronological = [...monthlyRecords].sort((a, b) => new Date(a.date) - new Date(b.date));
-
-            const dailyNetMap = {};
-            chronological.forEach(r => {
-                const day = r.date;
-                const net = r.pnl - r.fee;
-                dailyNetMap[day] = (dailyNetMap[day] || 0) + net;
-            });
-
-            const sortedDates = Object.keys(dailyNetMap).sort();
-            const cumulativeData = [];
-            let cumulativeSum = 0;
-
-            sortedDates.forEach(date => {
-                cumulativeSum += dailyNetMap[date];
-                cumulativeData.push(cumulativeSum);
-            });
-
-            const lastVal = cumulativeData[cumulativeData.length - 1] || 0;
-            const lineColor = lastVal >= 0 ? '#10b981' : '#f43f5e';
-            const fillColor = lastVal >= 0 ? 'rgba(16, 185, 129, 0.15)' : 'rgba(244, 63, 94, 0.15)';
-
-            dailyCumulativeChartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: sortedDates,
-                    datasets: [{
-                        label: '累計淨損益 (NTD)',
-                        data: cumulativeData,
-                        borderColor: lineColor,
-                        backgroundColor: fillColor,
-                        borderWidth: 2,
-                        fill: true,
-                        tension: 0.25
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: { legend: { labels: { color: '#cbd5e1' } } },
-                    scales: {
-                        x: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } },
-                        y: { ticks: { color: '#94a3b8' }, grid: { color: '#334155' } }
-                    }
-                }
-            });
-        }
-    </script>
-</body>
-</html>
+                    const entryDisplay = r.entryPrice ? `$${r.entryPrice}` : '-'; const exitDisplay = r.exitPrice ? `$${r.
